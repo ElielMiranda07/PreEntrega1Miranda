@@ -1,124 +1,124 @@
-let ingreso;
+let ingreso = prompt('Ingresar sueldo bruto para calcular el neto o "salir" para terminar.').toUpperCase();
 
-ingreso = parseInt(ingreso);
+const constantes = {
 
-const smvm = 65427;
+    smvm: 65427,
 
-const cbv = 152515;
+    cbv: 152515,
 
-const auto = 3100000;
+    auto: 3100000,
 
-const miami = 942500000;
+    miami: 942500000,
 
-const año = 12;
+    anio: 12,
 
+};
+
+function calc_sueldo_neto (ingreso, porcentaje){
+
+    if(ingreso < 200000){
+
+        return ingreso - (ingreso * porcentaje)
+
+    }
+    else if(ingreso >= 200000){
+
+        return ingreso - (ingreso * porcentaje)
+
+    }
+    else if(ingreso >= 350000){
+
+        return ingreso - (ingreso * porcentaje)
+
+    }
+
+}
 
 function retenciones (ingreso){
 
     if(ingreso < 200000){
 
-        porcentaje = 0.15
+        return 0.15
 
     }
     else if(ingreso >=  200000){
 
-        porcentaje = 0.25
+        return 0.25
 
     }
-    else if(ingreso >= 350000){
+    else{
 
-        porcentaje = 0.35
-
-    }
-
-    return porcentaje
-
-}
-
-function calcular_dif_smvm (sueldo_neto, smvm){
-
-    let dif_salario_mini = sueldo_neto - smvm;
-
-    return dif_salario_mini
-
-}
-
-function calcular_dif_cbv (sueldo_neto, cbv){
-
-    let dif_cbv = sueldo_neto - cbv;
-
-    return dif_cbv
-
-}
-
-function calc_sueldos_auto (sueldo_neto, auto){
-
-    let sueldos_auto = auto / sueldo_neto;
-
-    return sueldos_auto
-
-}
-
-function calc_sueldos_miami (sueldo_neto, miami){
-
-    let sueldos_miami = miami / sueldo_neto;
-
-    return sueldos_miami
-
-}
-
-function calc_sueldo_neto (ingreso, porcentaje){
-    if(ingreso < 200000){
-
-        sueldo_neto = ingreso - (ingreso * porcentaje)
-
-    }
-    else if(ingreso >= 200000){
-
-        sueldo_neto = ingreso - (ingreso * porcentaje)
-
-    }
-    else if(ingreso >= 350000){
-
-        sueldo_neto = ingreso - (ingreso + porcentaje)
+        return 0.35
 
     }
 
-    return sueldo_neto
 }
 
-function calc_meses_años (año, sueldos_auto){
+function calc_dif (sueldo_neto , constantes){
 
-    let años = sueldos_auto / año;
-
-    return años
+    return sueldo_neto - constantes.smvm
 
 }
 
-while (ingreso != "SALIR"){
+function calc_dif_1 (sueldo_neto , constantes){
 
-    ingreso = prompt('Ingresar sueldo bruto para calcular el neto o "salir" para terminar.').toUpperCase();
+    return sueldo_neto - constantes.cbv
 
-    
-    
-    if(ingreso != "SALIR"){
+}
+
+function calc_sueldos (sueldo_neto, constantes){
+
+    return parseFloat(constantes.auto / sueldo_neto).toFixed(1)
+
+}
+
+function calc_sueldos_1 (sueldo_neto, constantes){
+
+    return parseFloat(constantes.miami / sueldo_neto).toFixed(1)
+
+}
+
+function calc_meses_anios (constantes, sueldos_auto){
+
+    return parseFloat(sueldos_auto / constantes.anio).toFixed(2)
+
+}
+
+while (ingreso !== "SALIR"){
+
+    ingreso = parseInt(ingreso);
+
+    if(isNaN(ingreso)){
+
+        alert("Debés ingresar números o la palabra salir");
+
+    }
+    else{
 
         let porcentaje = retenciones(ingreso);
 
-        calc_sueldo_neto(ingreso, porcentaje);
+        let sueldo_neto = calc_sueldo_neto(ingreso, porcentaje);
 
-        let sueldos_auto = calc_sueldos_auto(sueldo_neto, auto);
+        let dif_smvm = calc_dif (sueldo_neto, constantes);
 
-        let sueldos_miami = calc_sueldos_miami(sueldo_neto, miami);
+        let dif_cbv = calc_dif_1 (sueldo_neto, constantes);
 
-        alert("Tu sueldo neto es: " + sueldo_neto + ", la diferencia con el SMVM es de: " + calcular_dif_smvm(sueldo_neto, smvm) + ", además la diferencia con la CBV es de: " 
+        let sueldos_auto = calc_sueldos (sueldo_neto, constantes);
+
+        let sueldos_miami = calc_sueldos_1 (sueldo_neto, constantes);
+
+        let sueldos_anios = calc_meses_anios (constantes, sueldos_auto);
+
+        let sueldos_anios_1 = calc_meses_anios (constantes, sueldos_miami)
+
+        alert("Tu sueldo neto es: " + sueldo_neto + ", la diferencia con el SMVM es de: " + dif_smvm + ", además la diferencia con la CBV es de: " + dif_cbv + ". Necesitas un total de: " 
         
-        + calcular_dif_cbv(sueldo_neto, cbv) + ". Necesitas un total de: " + parseFloat(calc_sueldos_auto(sueldo_neto, auto)).toFixed(1) + " sueldos para comprar el auto 0km más barato del mercado (" 
-        
-        + parseFloat(calc_meses_años(año, sueldos_auto)).toFixed(2) + " años). También necesitas " + parseFloat(calc_sueldos_miami(sueldo_neto, miami)).toFixed(1)
-        
-        + " sueldos para comprar una mansion en Miami, si, lamentablemente serían " + parseFloat(calc_meses_años(año, sueldos_miami)).toFixed(2) + " años.");
+        + sueldos_auto + " sueldos para comprar el auto 0km más barato del mercado (" + sueldos_anios + " años). También necesitas " + sueldos_miami 
     
+        + " sueldos para comprar una mansion en Miami, si, lamentablemente serían " + sueldos_anios_1 + " años.");
+
     }
+
+    ingreso = prompt('Ingresar sueldo bruto para calcular el neto o "salir" para terminar.').toUpperCase();
 
 }
