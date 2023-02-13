@@ -1,4 +1,6 @@
-let ingreso = prompt('Ingresar sueldo bruto para calcular el neto o "salir" para terminar.').toUpperCase();
+let ingreso = prompt('Ingresar sueldo bruto para calcular el neto, "sueldos" para ver el historial o "salir" para terminar.').toUpperCase();
+
+let monotributista
 
 const constantes = {
 
@@ -10,9 +12,11 @@ const constantes = {
 
     miami: 942500000,
 
-    anio: 12,
+    anio: 13,
 
 };
+
+let sueldos = [];
 
 function calc_sueldo_neto (ingreso, porcentaje){
 
@@ -21,12 +25,12 @@ function calc_sueldo_neto (ingreso, porcentaje){
         return ingreso - (ingreso * porcentaje)
 
     }
-    else if(ingreso >= 200000){
+    else if(ingreso <= 350000){
 
         return ingreso - (ingreso * porcentaje)
 
     }
-    else if(ingreso >= 350000){
+    else{
 
         return ingreso - (ingreso * porcentaje)
 
@@ -41,7 +45,7 @@ function retenciones (ingreso){
         return 0.15
 
     }
-    else if(ingreso >=  200000){
+    else if(ingreso <=  350000){
 
         return 0.25
 
@@ -86,14 +90,29 @@ function calc_meses_anios (constantes, sueldos_auto){
 
 while (ingreso !== "SALIR"){
 
-    ingreso = parseInt(ingreso);
+    if(ingreso === "SUELDOS"){
 
-    if(isNaN(ingreso)){
+        let total_sueldos = sueldos.length
+
+        let sueldo_mas_alto = Math.max.apply(null, sueldos);
+
+        let porcentaje = retenciones(sueldo_mas_alto);
+
+        let sueldo_mas_alto_neto = calc_sueldo_neto(sueldo_mas_alto, porcentaje);
+
+        alert("Historial de sueldos brutos: " + sueldos + ". Total de sueldos en el historial: " + total_sueldos + ". El sueldo bruto más alto es: " + sueldo_mas_alto + " y su neto es " 
+        
+        + sueldo_mas_alto_neto + ".");
+
+    }
+    else if(isNaN(ingreso)){
 
         alert("Debés ingresar números o la palabra salir");
 
     }
     else{
+
+        ingreso = parseInt(ingreso);
 
         let porcentaje = retenciones(ingreso);
 
@@ -117,8 +136,12 @@ while (ingreso !== "SALIR"){
     
         + " sueldos para comprar una mansion en Miami, si, lamentablemente serían " + sueldos_anios_1 + " años.");
 
+        sueldos.push(ingreso);
+
     }
 
-    ingreso = prompt('Ingresar sueldo bruto para calcular el neto o "salir" para terminar.').toUpperCase();
+    
+
+    ingreso = prompt('Ingresar sueldo bruto para calcular el neto, "sueldos" para ver el historial o "salir" para terminar.').toUpperCase();
 
 }
